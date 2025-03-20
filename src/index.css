@@ -1,0 +1,1183 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Merriweather+Sans:wght@400;600&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Open Sans', sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  h1, h2, h3 {
+    font-family: 'Merriweather', serif;
+  }
+  
+  h4, h5, h6 {
+    font-family: 'Merriweather Sans', sans-serif;
+  }
+
+  /* Improved focus styles for accessibility */
+  :focus-visible {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
+  }
+
+  /* Enhanced scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #b39329;
+  }
+}
+
+.financial-numbers {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #0F2B5B 0%, #00695C 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.section-alt {
+  background-color: #E6EBF2;
+  position: relative;
+}
+
+.section-alt::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+}
+
+/* Enhanced card hover effects */
+.hover-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(15, 43, 91, 0.1);
+}
+
+/* Improved button styles */
+.btn-primary {
+  @apply bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-lg transition-all transform hover:scale-[1.02] focus:ring-4 focus:ring-primary/30 inline-flex items-center gap-2;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+/* Loading state styles */
+.loading-skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+/* Improved form styles */
+.form-input {
+  @apply w-full p-3 border border-gray-300 rounded-lg transition-all;
+  @apply focus:ring-2 focus:ring-accent/50 focus:border-accent;
+  @apply hover:border-accent/50;
+}
+
+/* Accessibility improvements */
+.sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+}
+
+/* Enhanced testimonial cards */
+.testimonial-card {
+  @apply bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  font-size: 120px;
+  font-family: 'Merriweather', serif;
+  color: rgba(212, 175, 55, 0.1);
+  line-height: 1;
+}
+
+/* Improved section transitions */
+.section-transition {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 768px) {
+  .container {
+    @apply px-4;
+  }
+
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  .grid {
+    @apply gap-4;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none;
+  }
+
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+/* PrimeReact Custom Styles */
+.custom-steps .p-steps-item {
+  flex: 1;
+}
+
+.custom-steps .p-steps-item .p-menuitem-link {
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.custom-steps .p-steps-item.p-highlight .p-steps-number {
+  background: var(--accent-color);
+  color: white;
+}
+
+.custom-steps .p-steps-item:before {
+  border-top: 2px solid #e9ecef;
+}
+
+.custom-steps .p-steps-item.p-highlight:before {
+  border-top: 2px solid var(--accent-color);
+}
+
+.p-card {
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.p-card .p-card-body {
+  padding: 2rem;
+}
+
+.p-inputtext {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.p-inputtext:hover {
+  border-color: var(--accent-color);
+}
+
+.p-inputtext:focus {
+  box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.2);
+  border-color: var(--accent-color);
+}
+
+.p-button {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.p-button:not(.p-button-outlined):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.p-button.p-button-outlined:hover {
+  background: rgba(var(--accent-color-rgb), 0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.p-calendar {
+  width: 100%;
+}
+
+.p-calendar .p-inputtext {
+  width: 100%;
+}
+
+.p-message {
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.p-message.p-message-info {
+  background: #f0f7ff;
+  border: 1px solid #bae6fd;
+  color: #0369a1;
+}
+
+.p-message.p-message-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+:root {
+  --accent-color: #2563eb;
+  --accent-color-rgb: 37, 99, 235;
+  --success-color: #16a34a;
+  --success-color-rgb: 22, 163, 74;
+  --warning-color: #eab308;
+  --warning-color-rgb: 234, 179, 8;
+  --error-color: #dc2626;
+  --error-color-rgb: 220, 38, 38;
+  --gold-color: #f59e0b;
+  --gold-color-rgb: 245, 158, 11;
+  --warning-dark: #b45309;
+  --warning-light: #fef3c7;
+}
+
+/* Timer de Urgência */
+.countdown-timer {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+}
+
+/* Animação de Pulso para Urgência */
+@keyframes urgencyPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.text-warning {
+  animation: urgencyPulse 2s infinite;
+}
+
+/* Social Proof Flutuante */
+.social-proof-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Melhorias nos Trust Badges */
+.trust-badge {
+  transition: all 0.3s ease;
+}
+
+.trust-badge:hover {
+  transform: translateY(-2px);
+}
+
+/* Efeito de Brilho no Botão */
+.button-shine {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.button-shine::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  ) !important;
+  transform: rotate(45deg) !important;
+  animation: shine 2s infinite !important;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg) !important;
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg) !important;
+  }
+}
+
+/* Melhorias nos Cards */
+.card-hover-effect {
+  transition: all 0.3s ease;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Estilo para o Contador de Inscrições */
+.recent-signups {
+  background: linear-gradient(135deg, var(--success-color) 0%, var(--accent-color) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+
+/* Estilos específicos para melhor legibilidade */
+.p-inputtext {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  padding: 1rem 1rem 1rem 3rem !important;
+  border-width: 2px !important;
+}
+
+.p-inputtext::placeholder {
+  color: #6B7280 !important;
+}
+
+.p-button {
+  font-size: 1.125rem !important;
+  padding: 1rem 1.5rem !important;
+  font-weight: 600 !important;
+}
+
+.p-button .p-button-icon {
+  font-size: 1.25rem !important;
+}
+
+.p-steps .p-steps-item .p-menuitem-link {
+  padding: 1rem !important;
+}
+
+.p-steps .p-steps-item .p-steps-number {
+  font-size: 1.25rem !important;
+  min-width: 2.5rem !important;
+  height: 2.5rem !important;
+  line-height: 2.5rem !important;
+}
+
+.p-steps .p-steps-item .p-steps-title {
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+}
+
+.p-calendar .p-datepicker {
+  font-size: 1.125rem !important;
+}
+
+.p-calendar .p-datepicker table td {
+  padding: 0.75rem !important;
+}
+
+.p-calendar .p-datepicker table td > span {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  line-height: 2.5rem !important;
+}
+
+.p-message {
+  font-size: 1.125rem !important;
+  padding: 1rem !important;
+}
+
+/* Melhorias de acessibilidade */
+.p-inputtext:focus {
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+.p-button:focus {
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+/* Feedback visual mais claro */
+.p-invalid {
+  border-color: var(--error-color) !important;
+  background-color: #FEF2F2 !important;
+}
+
+.p-error {
+  color: var(--error-color) !important;
+  font-size: 1rem !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Espaçamento mais generoso */
+.space-y-8 > * + * {
+  margin-top: 2rem !important;
+}
+
+/* Destaque para campos obrigatórios */
+.required-field::after {
+  content: "*";
+  color: var(--error-color);
+  margin-left: 4px;
+}
+
+/* Melhor contraste para textos */
+.text-gray-600 {
+  color: #4B5563 !important;
+}
+
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+/* Destaque para botões principais - Verde */
+.p-button-primary {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  border: none !important;
+  font-size: 1.25rem !important;
+  padding: 1.5rem 2rem !important;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3) !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.p-button-primary:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4) !important;
+  background: linear-gradient(135deg, #047857 0%, #059669 100%) !important;
+}
+
+.p-button-primary:active:not(:disabled) {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 10px rgba(5, 150, 105, 0.3) !important;
+}
+
+.p-button-primary:disabled {
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+  background: #94a3b8 !important;
+  box-shadow: none !important;
+}
+
+.p-button-primary .p-button-icon {
+  font-size: 1.5rem !important;
+  margin-left: 0.75rem !important;
+}
+
+/* Efeito de Brilho no Botão */
+.button-shine {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.button-shine::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  ) !important;
+  transform: rotate(45deg) !important;
+  animation: shine 2s infinite !important;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg) !important;
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg) !important;
+  }
+}
+
+/* Feedback visual para interações */
+.p-inputtext:hover, .p-calendar:hover {
+  border-color: #059669 !important;
+}
+
+/* Melhor visibilidade para ícones */
+.pi {
+  font-size: 1.25rem !important;
+}
+
+/* Destaque para campos ativos */
+.p-inputtext:focus {
+  background-color: #F8FAFC !important;
+}
+
+/* Estilo para o box de instruções */
+.bg-blue-50 {
+  background-color: #EFF6FF !important;
+  border: 2px solid #BFDBFE !important;
+}
+
+/* Estilos específicos para melhor legibilidade */
+.p-inputtext {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  padding: 1rem 1rem 1rem 3rem !important;
+  border-width: 2px !important;
+}
+
+.p-inputtext::placeholder {
+  color: #6B7280 !important;
+}
+
+.p-button {
+  font-size: 1.125rem !important;
+  padding: 1rem 1.5rem !important;
+  font-weight: 600 !important;
+}
+
+.p-button .p-button-icon {
+  font-size: 1.25rem !important;
+}
+
+.p-steps .p-steps-item .p-menuitem-link {
+  padding: 1rem !important;
+}
+
+.p-steps .p-steps-item .p-steps-number {
+  font-size: 1.25rem !important;
+  min-width: 2.5rem !important;
+  height: 2.5rem !important;
+  line-height: 2.5rem !important;
+}
+
+.p-steps .p-steps-item .p-steps-title {
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+}
+
+.p-calendar .p-datepicker {
+  font-size: 1.125rem !important;
+}
+
+.p-calendar .p-datepicker table td {
+  padding: 0.75rem !important;
+}
+
+.p-calendar .p-datepicker table td > span {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  line-height: 2.5rem !important;
+}
+
+.p-message {
+  font-size: 1.125rem !important;
+  padding: 1rem !important;
+}
+
+/* Melhorias de acessibilidade */
+.p-inputtext:focus {
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+.p-button:focus {
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+/* Feedback visual mais claro */
+.p-invalid {
+  border-color: var(--error-color) !important;
+  background-color: #FEF2F2 !important;
+}
+
+.p-error {
+  color: var(--error-color) !important;
+  font-size: 1rem !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Espaçamento mais generoso */
+.space-y-8 > * + * {
+  margin-top: 2rem !important;
+}
+
+/* Destaque para campos obrigatórios */
+.required-field::after {
+  content: "*";
+  color: var(--error-color);
+  margin-left: 4px;
+}
+
+/* Melhor contraste para textos */
+.text-gray-600 {
+  color: #4B5563 !important;
+}
+
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+/* Destaque para botões principais */
+.p-button-primary {
+  background: linear-gradient(135deg, var(--accent-color) 0%, #1d4ed8 100%) !important;
+  border: none !important;
+  font-size: 1.25rem !important;
+  padding: 1.5rem 2rem !important;
+  box-shadow: 0 4px 15px rgba(var(--accent-color-rgb), 0.3) !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.p-button-primary:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(var(--accent-color-rgb), 0.4) !important;
+  background: linear-gradient(135deg, #1d4ed8 0%, var(--accent-color) 100%) !important;
+}
+
+.p-button-primary:active:not(:disabled) {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 10px rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+.p-button-primary:disabled {
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+  background: #94a3b8 !important;
+  box-shadow: none !important;
+}
+
+.p-button-primary .p-button-icon {
+  font-size: 1.5rem !important;
+  margin-left: 0.75rem !important;
+}
+
+/* Efeito de Brilho no Botão */
+.button-shine {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.button-shine::after {
+  content: '' !important;
+  position: absolute !important;
+  top: -50% !important;
+  left: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  ) !important;
+  transform: rotate(45deg) !important;
+  animation: shine 2s infinite !important;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) rotate(45deg) !important;
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg) !important;
+  }
+}
+
+/* Feedback visual para interações */
+.p-inputtext:hover, .p-calendar:hover {
+  border-color: var(--accent-color) !important;
+}
+
+/* Melhor visibilidade para ícones */
+.pi {
+  font-size: 1.25rem !important;
+}
+
+/* Destaque para campos ativos */
+.p-inputtext:focus {
+  background-color: #F8FAFC !important;
+}
+
+/* Estilo para elementos de confiança */
+.trust-badge {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.trust-badge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  padding: 4rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Card do formulário com efeito hover */
+.form-card {
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+.card-hover-effect:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Card de confirmação com destaque */
+.confirmation-card {
+  border: 2px solid rgba(var(--success-color-rgb), 0.3) !important;
+  background-color: rgba(var(--success-color-rgb), 0.05) !important;
+}
+
+/* Efeito de animação para contagem regressiva */
+.countdown-timer {
+  font-family: 'Roboto Mono', monospace;
+  animation: pulsate 1s infinite alternate;
+}
+
+@keyframes pulsate {
+  0% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* Botões de horário mais interativos */
+.time-button {
+  transition: all 0.3s ease !important;
+}
+
+.time-button:hover:not(.p-button-primary) {
+  background-color: rgba(var(--accent-color-rgb), 0.1) !important;
+  transform: scale(1.05) !important;
+}
+
+.time-button.p-button-primary {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 10px rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+/* Prova social flutuante */
+.social-proof-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Spots counter com animação */
+.spots-counter {
+  position: relative;
+  overflow: hidden;
+}
+
+.spots-counter::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: sheen 2s infinite;
+}
+
+@keyframes sheen {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Cartões de benefícios */
+.benefit-card {
+  transition: all 0.4s ease;
+  border-radius: 1rem;
+  border: 1px solid rgba(var(--accent-color-rgb), 0.1);
+  overflow: hidden;
+}
+
+.benefit-card:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Animação fade-in para elementos */
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animação pulse mais lenta */
+.animate-pulse-slow {
+  animation: pulse-slow 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+
+/* Estilos para depoimentos flutuantes */
+.floating-testimonial {
+  max-width: 350px;
+  margin-top: 2rem;
+  transition: all 0.5s ease;
+}
+
+/* Destacar texto importante */
+.text-yellow-300 {
+  color: var(--gold-color) !important;
+  text-shadow: 0 0 10px rgba(var(--gold-color-rgb), 0.3);
+}
+
+/* Melhorias para dispositivos móveis */
+@media (max-width: 768px) {
+  .p-button {
+    padding: 1rem !important;
+    font-size: 1rem !important;
+  }
+  
+  .p-inputtext {
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem !important;
+    font-size: 1rem !important;
+  }
+  
+  .p-steps .p-steps-item .p-steps-title {
+    display: none;
+  }
+  
+  .form-card {
+    margin-top: 3rem !important;
+  }
+  
+  .social-proof-float, .spots-counter {
+    position: static !important;
+    transform: none !important;
+    margin-bottom: 1rem !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+}
+
+/* Garantia e features */
+.guarantee-feature, .benefit-item {
+  transition: all 0.3s ease;
+}
+
+.guarantee-feature:hover, .benefit-item:hover {
+  transform: translateX(5px);
+}
+
+/* Estilos para botões de sucesso */
+.p-button-success {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  border: none !important;
+  font-size: 1.25rem !important;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.p-button-success:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4) !important;
+  background: linear-gradient(135deg, #047857 0%, #059669 100%) !important;
+}
+
+/* Redefinindo classes para garantir que os botões do formulário sejam verde */
+.p-button {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  border-color: #047857 !important;
+}
+
+.p-button:hover:not(:disabled):not(.p-button-outlined) {
+  background: linear-gradient(135deg, #047857 0%, #059669 100%) !important;
+  border-color: #059669 !important;
+}
+
+.p-button-outlined {
+  background: transparent !important;
+  color: #059669 !important;
+  border: 2px solid #059669 !important;
+}
+
+.p-button-outlined:hover {
+  background: rgba(5, 150, 105, 0.1) !important;
+  color: #047857 !important;
+  border-color: #047857 !important;
+}
+
+/* Estilos para Cards com bordas coloridas */
+.border-left-3 {
+  border-left-width: 6px !important;
+  border-left-style: solid !important;
+}
+
+/* Hover effects para cards */
+.p-card {
+  transition: all 0.3s ease-in-out !important;
+}
+
+.p-card:hover {
+  transform: translateY(-5px) !important;
+}
+
+/* Estilo para mensagens do PrimeReact */
+.p-message {
+  border-radius: 8px !important;
+  margin-bottom: 1rem !important;
+}
+
+.p-message .p-message-wrapper {
+  padding: 1rem !important;
+}
+
+.p-message.p-message-error {
+  background-color: #FEE2E2 !important;
+  border: none !important;
+  color: #991B1B !important;
+}
+
+.p-message.p-message-warn {
+  background-color: #FEF3C7 !important;
+  border: none !important;
+  color: #92400E !important;
+}
+
+.p-message.p-message-success {
+  background-color: #D1FAE5 !important;
+  border: none !important;
+  color: #065F46 !important;
+}
+
+.p-message.p-message-info {
+  background-color: #E0F2FE !important;
+  border: none !important;
+  color: #075985 !important;
+}
+
+/* Animação suave para ícones */
+.p-card .p-card-content svg {
+  transition: transform 0.3s ease !important;
+}
+
+.p-card:hover .p-card-content svg {
+  transform: scale(1.1) !important;
+}
+
+/* Estilo para botões dentro dos cards */
+.p-card .p-button {
+  transition: all 0.3s ease !important;
+}
+
+.p-card .p-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Animações para o CapitalProtegidoCard */
+.capital-protegido-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Animações para o RendaDolarCard */
+.renda-dolar-card {
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.renda-dolar-card:hover .dollar-icon {
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% {
+    filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.5));
+  }
+}
+
+.renda-dolar-card .metrics-item {
+  transition: transform 0.3s ease;
+}
+
+.renda-dolar-card:hover .metrics-item {
+  transform: translateY(-2px);
+}
+
+.renda-dolar-card .protection-badge {
+  animation: slideIn 0.5s ease-out forwards;
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animações para o AprovacaoGarantidaCard */
+.aprovacao-garantida-card {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.award-icon {
+  transition: transform 0.3s ease;
+}
+
+.award-icon:hover {
+  transform: scale(1.05);
+  animation: pulseGlow 2s infinite;
+}
+
+.benefits-item {
+  transition: transform 0.2s ease;
+}
+
+.benefits-item:hover {
+  transform: translateY(-2px);
+}
+
+.security-badge {
+  animation: slideInRight 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+@keyframes pulseGlow {
+  0% {
+    filter: drop-shadow(0 0 0.5rem rgba(34, 197, 94, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 1rem rgba(34, 197, 94, 0.4));
+  }
+  100% {
+    filter: drop-shadow(0 0 0.5rem rgba(34, 197, 94, 0.2));
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
