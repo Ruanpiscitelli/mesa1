@@ -45,19 +45,20 @@ import RendaDolarCard from './components/RendaDolarCard';
 import MetodoEstruturadoCard from './components/MetodoEstruturadoCard';
 import AprovacaoGarantidaCard from './components/AprovacaoGarantidaCard';
 import SuporteInternacionalCard from './components/SuporteInternacionalCard';
+import { validateForm, type FormData } from './utils/validation';
 
 // Lazy load components
 const ScrollToTop = lazy(() => import('./components/common/ScrollToTop'));
 const BenefitCard = lazy(() => import('./components/BenefitCard'));
 
 function App() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     whatsapp: '',
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Record<string, string>>({
     name: '',
     email: '',
     whatsapp: '',
@@ -97,7 +98,7 @@ function App() {
     return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(7, 11)}`;
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: keyof FormData, value: string) => {
     let formattedValue = value;
     let fieldError = '';
 
@@ -116,43 +117,34 @@ function App() {
       }
     }
 
-    setFormData(prev => ({ ...prev, [field]: formattedValue }));
-    setErrors(prev => ({ ...prev, [field]: fieldError }));
+    setFormData((prev: FormData) => ({ ...prev, [field]: formattedValue }));
+    setErrors((prev: Record<string, string>) => ({ ...prev, [field]: fieldError }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Validação final
-    const newErrors = {
-      name: formData.name.length < 3 ? 'Nome muito curto' : '',
-      email: !validateEmail(formData.email) ? 'Email inválido' : '',
-      whatsapp: !validateWhatsApp(formData.whatsapp) ? 'WhatsApp inválido' : ''
-    };
-
-    setErrors(newErrors);
-
-    if (Object.values(newErrors).some(error => error)) {
+    const validation = validateForm(formData);
+    
+    if (!validation.success) {
+      setErrors(validation.errors as Record<string, string>);
       setIsSubmitting(false);
       return;
     }
 
     try {
-      // Simulando envio do formulário
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Formata o número do WhatsApp removendo caracteres especiais
-      const whatsappNumber = formData.whatsapp.replace(/\D/g, '');
-      
-      // Monta a mensagem personalizada
-      const message = encodeURIComponent(
-        `Olá! Me chamo ${formData.name} e gostaria de saber mais sobre o método.`
-      );
-      
-      // Redireciona para o WhatsApp
-      window.location.href = `https://wa.me/55${whatsappNumber}?text=${message}`;
-      
+      if (validation.success && validation.data) {
+        const { whatsapp, name } = validation.data;
+        
+        const whatsappNumber = whatsapp.replace(/\D/g, '');
+        
+        const message = encodeURIComponent(
+          `Olá! Me chamo ${name} e gostaria de saber mais sobre o método.`
+        );
+        
+        window.location.href = `https://wa.me/55${whatsappNumber}?text=${message}`;
+      }
     } catch (error) {
       console.error('Erro ao enviar formulário:', error);
     } finally {
@@ -197,23 +189,27 @@ function App() {
 
   const renderForm = () => {
     return (
-      <div className="space-y-3 consultation-form">
+      <form onSubmit={handleSubmit} className="space-y-3 consultation-form" aria-label="Formulário de contato">
         <div className="p-field">
           <div className="bg-gray-50 p-2 rounded-lg">
             <span className="p-input-icon-left w-full">
-              <i className="pi pi-user text-xl" />
+              <i className="pi pi-user text-xl" aria-hidden="true" />
               <InputText
                 id="name"
+                name="name"
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 className={classNames('w-full py-2', { 'p-invalid': errors.name })}
                 placeholder="Nome completo"
+                aria-label="Nome completo"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? 'name-error' : undefined}
               />
             </span>
           </div>
           {errors.name && (
-            <div className="mt-1 flex items-center gap-2 text-red-600">
-              <i className="pi pi-exclamation-circle" />
+            <div id="name-error" className="mt-1 flex items-center gap-2 text-red-600" role="alert">
+              <i className="pi pi-exclamation-circle" aria-hidden="true" />
               <small>{errors.name}</small>
             </div>
           )}
@@ -222,19 +218,23 @@ function App() {
         <div className="p-field">
           <div className="bg-gray-50 p-2 rounded-lg">
             <span className="p-input-icon-left w-full">
-              <i className="pi pi-envelope text-xl" />
+              <i className="pi pi-envelope text-xl" aria-hidden="true" />
               <InputText
                 id="email"
+                name="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 className={classNames('w-full py-2', { 'p-invalid': errors.email })}
                 placeholder="Seu melhor e-mail"
+                aria-label="Endereço de e-mail"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? 'email-error' : undefined}
               />
             </span>
           </div>
           {errors.email && (
-            <div className="mt-1 flex items-center gap-2 text-red-600">
-              <i className="pi pi-exclamation-circle" />
+            <div id="email-error" className="mt-1 flex items-center gap-2 text-red-600" role="alert">
+              <i className="pi pi-exclamation-circle" aria-hidden="true" />
               <small>{errors.email}</small>
             </div>
           )}
@@ -243,43 +243,55 @@ function App() {
         <div className="p-field">
           <div className="bg-gray-50 p-2 rounded-lg">
             <span className="p-input-icon-left w-full">
-              <i className="pi pi-phone text-xl" />
+              <i className="pi pi-phone text-xl" aria-hidden="true" />
               <InputText
                 id="whatsapp"
+                name="whatsapp"
                 value={formData.whatsapp}
                 onChange={(e) => handleInputChange('whatsapp', e.target.value)}
                 className={classNames('w-full py-2', { 'p-invalid': errors.whatsapp })}
                 placeholder="WhatsApp com DDD"
+                aria-label="Número de WhatsApp"
+                aria-invalid={!!errors.whatsapp}
+                aria-describedby={errors.whatsapp ? 'whatsapp-error' : undefined}
               />
             </span>
           </div>
           {errors.whatsapp && (
-            <div className="mt-1 flex items-center gap-2 text-red-600">
-              <i className="pi pi-exclamation-circle" />
+            <div id="whatsapp-error" className="mt-1 flex items-center gap-2 text-red-600" role="alert">
+              <i className="pi pi-exclamation-circle" aria-hidden="true" />
               <small>{errors.whatsapp}</small>
             </div>
           )}
         </div>
 
-        <div className="flex justify-between mt-4">
-          <Button
-            label="QUERO SABER MAIS"
-            icon="pi pi-whatsapp"
-            iconPos="right"
-            onClick={handleSubmit}
-            disabled={!formData.name || !formData.email || !formData.whatsapp || isSubmitting}
-            loading={isSubmitting}
-            loadingIcon="pi pi-spinner pi-spin"
-            className="w-full p-button-raised p-button-success text-lg py-3 px-6 shadow-lg button-shine font-bold text-white"
-          />
-        </div>
+        <Button
+          type="submit"
+          className="cta-button cta-button-animate button-shine"
+          loading={isSubmitting}
+          disabled={isSubmitting}
+          aria-label={isSubmitting ? 'Enviando formulário...' : 'Quero Saber Mais'}
+        >
+          <span className="cta-button-text">
+            <ArrowRight className="w-5 h-5" />
+            {isSubmitting ? 'Enviando...' : 'Quero Saber Mais'}
+          </span>
+        </Button>
 
-        {/* Mensagem de Segurança */}
-        <div className="mt-3 flex items-center justify-center gap-2 text-gray-600">
-          <i className="pi pi-lock" />
-          <span className="text-sm">Seus dados estão protegidos e seguros</span>
-        </div>
-      </div>
+        {timeLeft > 0 && (
+          <div className="text-center text-sm text-gray-600" role="timer" aria-label="Tempo restante">
+            <i className="pi pi-clock mr-2" aria-hidden="true" /> 
+            Oferta expira em: {formatTime(timeLeft)}
+          </div>
+        )}
+
+        {spotsLeft > 0 && (
+          <div className="text-center text-sm text-gray-600" role="status" aria-label="Vagas restantes">
+            <i className="pi pi-users mr-2" aria-hidden="true" />
+            Apenas {spotsLeft} vagas restantes
+          </div>
+        )}
+      </form>
     );
   };
 
@@ -362,6 +374,8 @@ function App() {
                         src={`https://i.pravatar.cc/32?img=${Math.floor(Math.random() * 10)}`} 
                         className="w-8 h-8 rounded-full border-2 border-white" 
                         alt="Recent signup" 
+                        width={32}
+                        height={32}
                       />
                       <div className="text-sm">
                         <p className="font-semibold text-gray-700">{recentSignup.name} acabou de se inscrever</p>
@@ -392,26 +406,36 @@ function App() {
                       src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&h=150&fit=crop"
                       className="w-10 h-10 rounded-full border-2 border-white"
                       alt="Professional man"
+                      width={40}
+                      height={40}
                     />
                     <img
                       src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop"
                       className="w-10 h-10 rounded-full border-2 border-white"
                       alt="Professional woman"
+                      width={40}
+                      height={40}
                     />
                     <img
                       src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?w=150&h=150&fit=crop"
                       className="w-10 h-10 rounded-full border-2 border-white"
                       alt="Senior professional"
+                      width={40}
+                      height={40}
                     />
                     <img
                       src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=150&h=150&fit=crop"
                       className="w-10 h-10 rounded-full border-2 border-white"
                       alt="Business woman"
+                      width={40}
+                      height={40}
                     />
                     <img
                       src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&h=150&fit=crop"
                       className="w-10 h-10 rounded-full border-2 border-white"
                       alt="Senior businessman"
+                      width={40}
+                      height={40}
                     />
                   </div>
                   <p className="text-light text-sm">
@@ -426,20 +450,51 @@ function App() {
       </section>
 
       {/* Quick Benefits Bar */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-            <Suspense fallback={<div className="loading-skeleton">Loading benefits...</div>}>
-              <CapitalProtegidoCard />
+      <section className="py-8 md:py-16 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="text-center mb-6 md:mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary">Principais Benefícios</h2>
+            <p className="text-gray-600 mt-2">Descubra as vantagens exclusivas do nosso método</p>
+          </div>
+          
+          <div className="card-container">
+            <Suspense fallback={
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="loading-skeleton h-72"></div>
+                ))}
+              </div>
+            }>
+              <div className="card">
+                <CapitalProtegidoCard />
+              </div>
               
-              <RendaDolarCard />
+              <div className="card">
+                <RendaDolarCard />
+              </div>
               
-              <MetodoEstruturadoCard />
+              <div className="card">
+                <MetodoEstruturadoCard />
+              </div>
               
-              <AprovacaoGarantidaCard />
+              <div className="card">
+                <AprovacaoGarantidaCard />
+              </div>
               
-              <SuporteInternacionalCard />
+              <div className="card">
+                <SuporteInternacionalCard />
+              </div>
             </Suspense>
+          </div>
+          
+          <div className="text-center mt-8 md:mt-12">
+            <button 
+              className="bg-accent hover:bg-accent/90 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-[1.02] focus:ring-4 focus:ring-accent/30 inline-flex items-center gap-2" 
+              onClick={scrollToForm}
+            >
+              <Shield className="w-5 h-5" />
+              QUERO PROTEGER MEU PATRIMÔNIO
+            </button>
           </div>
         </div>
       </section>
@@ -749,6 +804,8 @@ function App() {
                     src="https://images.unsplash.com/photo-1612837017391-4b6b7b0e2b0b?w=150&h=150&fit=crop"
                     alt="Roberto S."
                     className="w-16 h-16 rounded-full object-cover"
+                    width={64}
+                    height={64}
                   />
                   <div className="ml-4">
                     <h3 className="font-merriweather text-lg font-bold text-primary">Roberto S., 57 anos</h3>
@@ -774,6 +831,8 @@ function App() {
                     src="https://images.unsplash.com/photo-1588516903720-8ceb67f9ef84?w=150&h=150&fit=crop"
                     alt="Maria L."
                     className="w-16 h-16 rounded-full object-cover"
+                    width={64}
+                    height={64}
                   />
                   <div className="ml-4">
                     <h3 className="font-merriweather text-lg font-bold text-primary">Maria L., 59 anos</h3>
@@ -1156,6 +1215,8 @@ function App() {
                     src="/src/components/features/willtrade.webp"
                     alt="William Aksenen"
                     className="rounded-lg shadow-md w-full"
+                    width={400}
+                    height={500}
                   />
                 </div>
                 <div className="md:w-2/3">
@@ -1196,6 +1257,71 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Aviso Importante */}
+      <div className="bg-white">
+        <div className="container mx-auto px-4">
+          {/* Aviso de Riscos */}
+          <div className="footer-accordion-item" data-important>
+            <div 
+              className="footer-accordion-toggle"
+              role="button"
+              tabIndex={0}
+              aria-expanded="true"
+            >
+              <span className="icon-importante" aria-hidden="true"></span>
+              <h4></h4>
+              <button 
+                aria-label="Ver Menos"
+                className="button-accordion"
+              >
+                −
+              </button>
+            </div>
+            <div 
+              className="footer-accordion-box"
+              aria-hidden="false"
+            >
+              <p>
+                Investimentos envolvem riscos e podem causar perdas ao investidor. Certifique-se dos riscos e se o investimento faz sentido para o seu perfil antes de investir. Não há garantia de retorno. Retornos passados não garantem retornos futuros.
+              </p>
+            </div>
+          </div>
+
+          {/* Aviso Legal */}
+          <div className="footer-accordion-item" data-important>
+            <div 
+              className="footer-accordion-toggle"
+              role="button"
+              tabIndex={0}
+              aria-expanded="true"
+            >
+              <span className="icon-importante" aria-hidden="true">ℹ️</span>
+              <h4>Importante</h4>
+              <button 
+                aria-label="Ver Menos"
+                className="button-accordion"
+              >
+                −
+              </button>
+            </div>
+            <div 
+              className="footer-accordion-box"
+              aria-hidden="false"
+            >
+              <p>
+                Este conteúdo é oferecido pela <strong>WILLTRADER CONSULTORIA E ANÁLISES</strong>. 
+                Os materiais são fornecidos "como estão", sem garantias sobre precisão, resultados ou confiabilidade. 
+                A <strong>WILLTRADER</strong> não oferece aconselhamento financeiro pessoal, sendo apenas um recurso informativo. 
+                Os retornos financeiros apresentados são excepcionais e não devem ser esperados pelo investidor médio, 
+                sendo sempre proporcionais ao tamanho do seu investimento. A expertise do profissional em sua área de 
+                atuação não implica necessariamente o sucesso da estratégia veiculada na campanha, não devendo ser 
+                interpretada como uma promessa de retorno financeiro. Os riscos são inerentes a qualquer operação financeira.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Footer */}
       <footer className="bg-primary text-white py-12">

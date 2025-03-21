@@ -296,14 +296,16 @@
 :root {
   --accent-color: #2563eb;
   --accent-color-rgb: 37, 99, 235;
-  --success-color: #16a34a;
-  --success-color-rgb: 22, 163, 74;
-  --warning-color: #eab308;
-  --warning-color-rgb: 234, 179, 8;
+  --accent-dark: #1d4ed8;
+  --accent-light: #60a5fa;
+  --success-color: #059669;
+  --success-color-rgb: 5, 150, 105;
   --error-color: #dc2626;
   --error-color-rgb: 220, 38, 38;
-  --gold-color: #f59e0b;
-  --gold-color-rgb: 245, 158, 11;
+  --gold-color: #fbbf24;
+  --gold-color-rgb: 251, 191, 36;
+  --warning-color: #eab308;
+  --warning-color-rgb: 234, 179, 8;
   --warning-dark: #b45309;
   --warning-light: #fef3c7;
 }
@@ -1180,4 +1182,339 @@
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+/* Animações para a segunda dobra */
+.benefits-section {
+  position: relative;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  padding: 4rem 0;
+}
+
+.benefits-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(239, 246, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.98);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Animação sequencial para os cards */
+.benefits-card {
+  animation: cardEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.benefits-card:nth-child(1) { animation-delay: 0.1s; }
+.benefits-card:nth-child(2) { animation-delay: 0.2s; }
+.benefits-card:nth-child(3) { animation-delay: 0.3s; }
+.benefits-card:nth-child(4) { animation-delay: 0.4s; }
+.benefits-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* Efeito de hover melhorado */
+.benefits-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsividade melhorada */
+@media (min-width: 768px) {
+  .benefits-section {
+    padding: 4rem 0;
+  }
+  
+  .benefits-card {
+    margin: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .benefits-section {
+    padding: 6rem 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .benefits-section {
+    padding: 8rem 0;
+  }
+  
+  .benefits-card {
+    max-width: none;
+  }
+}
+
+/* Sistema de Grid Responsivo para Cards */
+.card-container {
+  display: grid;
+  width: 100%;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  margin: 0 auto;
+  grid-template-columns: 1fr;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Breakpoints progressivos - de menor para maior */
+@media (min-width: 540px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    padding: 1.5rem;
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .card-container {
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 1600px;
+  }
+}
+
+/* Estrutura de Card - Controle Visual */
+.card {
+  display: flex;
+  width: 100%;
+  min-width: 0; /* Previne overflow */
+  height: 100%;
+}
+
+/* Estrutura Interna dos Cards */
+.card > div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.card > div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.15);
+}
+
+/* Estrutura de proporção interna consistente */
+.card-header {
+  flex: 0 0 auto; /* Não cresce, não encolhe */
+  padding: 0.875rem 1rem;
+}
+
+.card-body {
+  flex: 1; /* Preenche espaço disponível */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  position: relative;
+}
+
+.card-footer {
+  flex: 0 0 auto; /* Não cresce, não encolhe */
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Adaptações específicas para tamanhos de tela */
+@media (min-width: 640px) {
+  .card-header {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .card-body {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .card-footer {
+    padding: 0.875rem 1.5rem;
+  }
+}
+
+/* Utilitários para texto responsivo em elementos internos */
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.card-subtitle {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.card-text {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 768px) {
+  .card-title {
+    font-size: 1.125rem;
+  }
+  
+  .card-subtitle {
+    font-size: 0.925rem;
+  }
+  
+  .card-text {
+    font-size: 0.925rem;
+  }
+}
+
+/* Loading Skeleton */
+.loading-skeleton {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  border-radius: 1rem;
+  background: linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.6) 25%,
+    rgba(226, 232, 240, 0.9) 37%,
+    rgba(226, 232, 240, 0.6) 63%
+  );
+  background-size: 400% 100%;
+  animation: loading 1.4s ease infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* Seção de Benefits */
+.benefits-section {
+  position: relative;
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  padding: 3rem 0;
+}
+
+@media (min-width: 1024px) {
+  .benefits-section {
+    padding: 4rem 0;
+  }
+}
+
+.benefits-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(239, 246, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+/* Estilos personalizados para o botão CTA */
+.cta-button {
+  @apply w-full py-4 px-8 text-lg font-bold text-white rounded-xl;
+  @apply bg-gradient-to-r from-blue-600 to-blue-500;
+  @apply shadow-lg shadow-blue-500/30;
+  @apply transform transition-all duration-300;
+  @apply hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/40;
+  @apply active:scale-[0.98];
+  @apply relative overflow-hidden;
+}
+
+.cta-button::before {
+  content: '';
+  @apply absolute inset-0 bg-white/20;
+  @apply transform translate-x-[-100%] skew-x-[-15deg];
+  @apply transition-transform duration-700;
+}
+
+.cta-button:hover::before {
+  @apply translate-x-[100%];
+}
+
+.cta-button-text {
+  @apply relative z-10 inline-flex items-center justify-center gap-2;
+  @apply text-white font-semibold tracking-wide;
+}
+
+/* Animação de pulso suave */
+@keyframes soft-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.cta-button-animate {
+  animation: soft-pulse 2s infinite;
+}
+
+/* Estilos para o Aviso Importante */
+.footer-accordion-item {
+  @apply bg-white border border-gray-200 rounded-none overflow-hidden mb-8;
+}
+
+.footer-accordion-toggle {
+  @apply flex items-center gap-3 p-3 w-full bg-transparent text-gray-700;
+}
+
+.footer-accordion-toggle h4 {
+  @apply text-sm font-normal text-gray-700;
+}
+
+.icon-importante {
+  @apply w-4 h-4 text-gray-400;
+  content: "ℹ️";
+  opacity: 0.4;
+  transform: scale(0.8);
+}
+
+.footer-accordion-box {
+  @apply p-4 bg-transparent text-gray-600;
+}
+
+.footer-accordion-box p {
+  @apply text-xs leading-relaxed font-light;
+}
+
+.footer-accordion-box strong {
+  @apply text-gray-800 font-normal;
+}
+
+.button-accordion {
+  @apply text-sm font-light text-gray-400 bg-transparent border-none cursor-pointer px-2 ml-auto;
 }

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
+import { useOptimizedMemo } from '../hooks/useOptimizedCallback';
 
 interface BenefitCardProps {
   icon: LucideIcon;
@@ -10,30 +11,42 @@ interface BenefitCardProps {
   delay: number;
 }
 
-const BenefitCard: React.FC<BenefitCardProps> = ({
+const BenefitCard: React.FC<BenefitCardProps> = memo(({
   icon: Icon,
   title,
   description,
   color,
   delay
 }) => {
+  const animationProps = useOptimizedMemo({
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5, delay }
+  }, [delay]);
+
+  const iconWrapperStyle = useOptimizedMemo({
+    backgroundColor: `${color}15`
+  }, [color]);
+
+  const overlayStyle = useOptimizedMemo({
+    backgroundColor: color
+  }, [color]);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay }}
+      {...animationProps}
       className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all relative overflow-hidden group"
     >
       <div
         className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity"
-        style={{ backgroundColor: color }}
+        style={overlayStyle}
       />
       
       <div className="relative z-10">
         <div className="flex justify-center mb-4">
           <div
             className="p-3 rounded-lg transition-all transform group-hover:scale-110"
-            style={{ backgroundColor: `${color}15` }}
+            style={iconWrapperStyle}
           >
             <Icon className="w-8 h-8" style={{ color }} />
           </div>
@@ -49,6 +62,8 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
       </div>
     </motion.div>
   );
-};
+});
+
+BenefitCard.displayName = 'BenefitCard';
 
 export default BenefitCard; 
